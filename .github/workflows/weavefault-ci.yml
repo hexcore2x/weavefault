@@ -12,6 +12,8 @@ concurrency:
 
 env:
   PYTHON_VERSION: "3.11"
+  BLACK_VERSION: "24.4.2"
+  RUFF_VERSION: "0.4.4"
 
 jobs:
   # ──────────────────────────────────────────────────────────────
@@ -30,7 +32,7 @@ jobs:
           cache: pip
 
       - name: Install lint dependencies
-        run: pip install black ruff
+        run: pip install black==${{ env.BLACK_VERSION }} ruff==${{ env.RUFF_VERSION }}
 
       - name: Check formatting (black)
         run: black --check --diff src/ tests/ scripts/
