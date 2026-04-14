@@ -1,0 +1,172 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# WeaveFault Standards Configuration
+#
+# Reference definitions for supported FMEA standards.
+# Each entry defines RPN thresholds, scoring scales, and required columns.
+# ──────────────────────────────────────────────────────────────────────────────
+
+IEC_60812:
+  full_name: "IEC 60812:2018 — Failure modes and effects analysis (FMEA and FMECA)"
+  domains: [cloud, embedded, hybrid, mechanical]
+  rpn_thresholds:
+    high: 200
+    medium: 100
+    low: 0
+  scales:
+    severity:
+      1: "No effect — failure not noticeable"
+      2: "Very minor — failure noticed by user, no function lost"
+      3: "Minor — minor function lost, workaround available"
+      4: "Low — some function degraded, slight dissatisfaction"
+      5: "Moderate — reduced performance, user dissatisfied"
+      6: "Significant — partial loss of primary function"
+      7: "High — primary function impaired, system degraded"
+      8: "Very high — primary function lost, data at risk"
+      9: "Critical — safety function lost, regulatory risk"
+      10: "Catastrophic — safety hazard, loss of life possible"
+    occurrence:
+      1: "Virtually impossible — < 1 in 1,000,000"
+      2: "Remote — < 1 in 150,000"
+      3: "Very low — < 1 in 15,000"
+      4: "Low — < 1 in 2,000"
+      5: "Moderate low — < 1 in 400"
+      6: "Moderate — < 1 in 80"
+      7: "Moderate high — < 1 in 20"
+      8: "High — < 1 in 8"
+      9: "Very high — < 1 in 3"
+      10: "Near certain — > 1 in 2"
+    detection:
+      1: "Almost certain — controls will almost certainly detect failure"
+      2: "Very high — very high chance of detection"
+      3: "High — high chance of detection"
+      4: "Moderately high — moderately high chance"
+      5: "Moderate — moderate chance of detection"
+      6: "Low — low chance of detection"
+      7: "Very low — very low chance"
+      8: "Remote — remote chance of detection"
+      9: "Very remote — very remote chance"
+      10: "Absolute uncertainty — cannot detect or not checked"
+  notes: "Default standard for cloud and general industrial systems."
+
+
+AIAG_FMEA4:
+  full_name: "AIAG FMEA-4 — Potential Failure Mode and Effects Analysis (4th edition)"
+  domains: [mechanical, embedded]
+  rpn_thresholds:
+    high: 100
+    medium: 50
+    low: 0
+  scales:
+    severity:
+      1: "None — no discernible effect"
+      2: "Very minor — vehicle/item operable, minor non-conformance"
+      3: "Minor — vehicle/item operable, minor non-conformance noticed"
+      4: "Very low — vehicle/item operable with slight degradation"
+      5: "Low — vehicle operable, comfort/convenience item inoperable"
+      6: "Moderate — vehicle operable, comfort/convenience item degraded"
+      7: "High — vehicle operable, primary function degraded"
+      8: "Very high — vehicle inoperable, primary function lost"
+      9: "Hazardous with warning — possible safety issue, with warning"
+      10: "Hazardous without warning — safety issue, no warning"
+    occurrence:
+      1: "Virtually impossible — failure unlikely"
+      2: "Remote — relatively few failures"
+      3: "Very low — relatively few failures (higher end)"
+      4: "Low — occasional failures"
+      5: "Low moderate — occasional failures (higher end)"
+      6: "Moderate — occasional failures"
+      7: "Moderate high — frequent failures"
+      8: "High — frequent failures"
+      9: "Very high — very frequent failures"
+      10: "Near certain — failure almost inevitable"
+    detection:
+      1: "Almost certain — design control will detect potential cause/mechanism"
+      2: "Very high — very high likelihood of detection"
+      3: "High — high likelihood"
+      4: "Moderately high — moderately high likelihood"
+      5: "Moderate — moderate likelihood"
+      6: "Low — low likelihood"
+      7: "Very low — very low likelihood"
+      8: "Remote — remote likelihood of detection"
+      9: "Very remote — very remote likelihood"
+      10: "Absolute uncertainty — no known design control"
+  notes: "Primary standard for automotive and mechanical manufacturing FMEA."
+
+
+MIL_STD_1629:
+  full_name: "MIL-STD-1629A — Procedures for Performing a Failure Mode, Effects, and Criticality Analysis"
+  domains: [embedded, mechanical, hybrid]
+  rpn_thresholds:
+    high: 200
+    medium: 100
+    low: 0
+  criticality_categories:
+    Category_I: "Catastrophic — may cause death or weapon system loss"
+    Category_II: "Critical — may cause severe injury, major property damage, or major system damage"
+    Category_III: "Marginal — may cause minor injury, minor property damage, or minor system damage"
+    Category_IV: "Minor — not serious enough to cause injury or major system damage"
+  scales:
+    severity:
+      1-2: "Category IV — Minor, no operational impact"
+      3-4: "Category III — Marginal, minor system degradation"
+      5-7: "Category II — Critical, significant mission impact"
+      8-10: "Category I — Catastrophic, mission/life loss"
+    occurrence:
+      1: "Extremely low — failure rate < 1E-6 per hour"
+      3: "Low — failure rate 1E-6 to 1E-5 per hour"
+      5: "Moderate — failure rate 1E-5 to 1E-4 per hour"
+      7: "High — failure rate 1E-4 to 1E-3 per hour"
+      10: "Very high — failure rate > 1E-3 per hour"
+    detection:
+      1: "Certain detection — BIT/monitoring always detects"
+      5: "Moderate — intermittent detection"
+      10: "No detection — failure not detectable"
+  notes: "Defense and aerospace standard. Uses criticality analysis alongside RPN."
+
+
+ISO_26262:
+  full_name: "ISO 26262:2018 — Road vehicles — Functional safety"
+  domains: [embedded, hybrid]
+  rpn_thresholds:
+    high: 200
+    medium: 100
+    low: 0
+  asil_levels:
+    QM: "Quality Management — no specific safety requirement"
+    ASIL_A: "Lowest ASIL — minor injury risk"
+    ASIL_B: "Moderate injury risk"
+    ASIL_C: "Serious injury risk"
+    ASIL_D: "Highest ASIL — life-threatening or fatal risk"
+  asil_determination:
+    severity_classes:
+      S0: "No injuries"
+      S1: "Light and moderate injuries"
+      S2: "Severe and life-threatening injuries (survival probable)"
+      S3: "Life-threatening injuries (survival uncertain) or fatal injuries"
+    exposure_classes:
+      E0: "Incredible"
+      E1: "Very low probability"
+      E2: "Low probability"
+      E3: "Medium probability"
+      E4: "High probability"
+    controllability_classes:
+      C0: "Controllable in general"
+      C1: "Simply controllable"
+      C2: "Normally controllable"
+      C3: "Difficult to control or uncontrollable"
+  scales:
+    severity:
+      1-2: "S0 — No injuries, no safety relevance"
+      3-4: "S1 — Light or moderate injuries"
+      5-7: "S2 — Severe / life-threatening, survival probable"
+      8-10: "S3 — Fatal or life-threatening, survival uncertain"
+    occurrence:
+      1-3: "E1 — Very low probability"
+      4-5: "E2 — Low probability"
+      6-7: "E3 — Medium probability"
+      8-10: "E4 — High probability"
+    detection:
+      1-2: "C0 — Controllable by all drivers in all situations"
+      3-5: "C1/C2 — Simply or normally controllable"
+      6-10: "C3 — Difficult or uncontrollable"
+  notes: "Functional safety standard for automotive. ASIL rating supplements RPN."

@@ -1,0 +1,41 @@
+# Text files — normalize line endings to LF
+*.py        text eol=lf
+*.ts        text eol=lf
+*.tsx       text eol=lf
+*.md        text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.json      text eol=lf
+*.toml      text eol=lf
+*.txt       text eol=lf
+*.html      text eol=lf
+*.css       text eol=lf
+*.js        text eol=lf
+*.sh        text eol=lf
+*.cfg       text eol=lf
+*.ini       text eol=lf
+*.xml       text eol=lf
+*.drawio    text eol=lf
+
+# Binary files — do not touch
+*.png       binary
+*.svg       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.pdf       binary
+*.whl       binary
+*.xlsx      binary
+*.zip       binary
+*           text=auto eol=lf
+*.png       binary
+*.svg       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.pdf       binary
+*.whl       binary
+*.xlsx      binary
+*.zip       binary

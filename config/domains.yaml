@@ -1,0 +1,277 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# WeaveFault Domain Configuration
+#
+# Defines domain-specific context for FMEA generation:
+#   - component_types: what components are typical in this domain
+#   - common_failure_modes: seed failure modes per component type
+#   - severity_context: what constitutes each severity tier in this domain
+#   - detection_methods: how failures are typically detected
+# ──────────────────────────────────────────────────────────────────────────────
+
+cloud:
+  description: "Cloud-native microservices, APIs, databases, and serverless architectures"
+  example_systems:
+    - "AWS / GCP / Azure microservice architectures"
+    - "Kubernetes-orchestrated workloads"
+    - "Event-driven systems (Kafka, SQS, SNS)"
+    - "REST / gRPC API platforms"
+
+  component_types:
+    SERVICE:
+      description: "A stateless or stateful microservice"
+      failure_modes:
+        - "Unhandled exception / crash loop"
+        - "Memory leak leading to OOM kill"
+        - "Dependency timeout cascade"
+        - "Misconfigured environment variable"
+        - "Graceful shutdown failure under high load"
+    DATABASE:
+      description: "Relational or NoSQL data store"
+      failure_modes:
+        - "Connection pool exhaustion"
+        - "Replication lag causing stale reads"
+        - "Disk space exhaustion"
+        - "Index corruption"
+        - "Long-running query causing table lock"
+    QUEUE:
+      description: "Message broker or event streaming service"
+      failure_modes:
+        - "Consumer group lag accumulation"
+        - "Dead-letter queue overflow"
+        - "Partition reassignment storm"
+        - "Message ordering violation"
+        - "Broker leader election failure"
+    GATEWAY:
+      description: "API gateway, load balancer, or ingress controller"
+      failure_modes:
+        - "TLS certificate expiry"
+        - "Rate limiter misconfiguration causing false 429s"
+        - "Upstream health check misconfiguration"
+        - "Routing rule regression after deployment"
+        - "DDoS causing connection saturation"
+    CACHE:
+      description: "In-memory cache (Redis, Memcached)"
+      failure_modes:
+        - "Cache stampede on cold start"
+        - "Memory eviction causing cache thrashing"
+        - "Replication split-brain"
+        - "Key expiry misconfiguration"
+        - "Hot key contention"
+    LOADBALANCER:
+      description: "Traffic distribution layer"
+      failure_modes:
+        - "Sticky session affinity failure"
+        - "Health check false positive removing healthy nodes"
+        - "SSL termination failure"
+        - "Asymmetric load distribution"
+        - "Connection draining timeout too short"
+    STORAGE:
+      description: "Object or block storage service"
+      failure_modes:
+        - "Bucket policy misconfiguration exposing data"
+        - "Eventual consistency causing stale reads"
+        - "Throughput throttling"
+        - "Cross-region replication lag"
+        - "Object versioning conflict"
+
+  severity_context:
+    10: "Complete platform outage; data loss; regulatory breach; SLA breach > 4 hours"
+    8-9: "Major feature unavailable; user-facing errors > 10 min; revenue impact"
+    6-7: "Degraded performance; partial feature failure; monitoring gaps"
+    4-5: "Minor degradation; increased latency; localised errors"
+    1-3: "Cosmetic / logging issue; no user impact"
+
+  detection_methods:
+    - "Distributed tracing (OpenTelemetry, Jaeger)"
+    - "Metrics dashboards (Prometheus / Grafana)"
+    - "Structured log aggregation (Loki, Splunk, CloudWatch)"
+    - "Synthetic canary testing"
+    - "Health check endpoints (/healthz, /readyz)"
+    - "Alerting on error rate / p99 latency SLOs"
+
+  standards_preference: "IEC_60812"
+
+
+embedded:
+  description: "Real-time firmware, sensors, actuators, and RTOS-based embedded systems"
+  example_systems:
+    - "IoT edge devices"
+    - "Automotive ECUs"
+    - "RTOS-based controllers (FreeRTOS, VxWorks)"
+    - "Industrial PLCs"
+    - "Medical device firmware"
+
+  component_types:
+    SENSOR:
+      description: "Physical measurement transducer"
+      failure_modes:
+        - "Sensor drift / calibration loss"
+        - "Signal noise exceeding ADC resolution"
+        - "Power rail brown-out causing false reading"
+        - "I2C/SPI bus collision"
+        - "Temperature coefficient out of spec"
+    ACTUATOR:
+      description: "Physical output device (motor, valve, relay)"
+      failure_modes:
+        - "Over-current fault not caught by firmware"
+        - "Mechanical jam undetected by position feedback"
+        - "PWM frequency mismatch causing resonance"
+        - "Watchdog timer not resetting actuator on firmware hang"
+        - "Stuck-at fault in drive circuit"
+    SERVICE:
+      description: "Firmware task or software component"
+      failure_modes:
+        - "Stack overflow in interrupt handler"
+        - "Race condition on shared peripheral register"
+        - "Watchdog timer expiry causing hard reset"
+        - "Flash wear levelling exhaustion"
+        - "Bootloader rollback failure"
+    NETWORK:
+      description: "Communication bus or wireless link"
+      failure_modes:
+        - "CAN bus error frame storm"
+        - "BLE connection interval mismatch"
+        - "MQTT message loss under poor RF conditions"
+        - "UART baud rate drift at temperature extremes"
+        - "Ethernet PHY auto-negotiation failure"
+    GATEWAY:
+      description: "Protocol bridge or edge gateway"
+      failure_modes:
+        - "OTA update failure bricking device"
+        - "TLS handshake timeout on constrained CPU"
+        - "Buffer overflow in message serialisation"
+        - "Clock skew causing HMAC validation failure"
+        - "DNS resolution failure in captive portal environment"
+
+  severity_context:
+    10: "Loss of life; loss of vehicle control; safety-critical system failure"
+    8-9: "Serious injury risk; mission-critical function loss; regulatory failure"
+    6-7: "Functional degradation; safety monitor loss; data integrity risk"
+    4-5: "Performance degradation; non-critical feature loss; increased maintenance"
+    1-3: "Cosmetic / logging issue; no operational impact"
+
+  detection_methods:
+    - "Hardware watchdog timer"
+    - "Built-in self-test (BIST) routines"
+    - "CAN bus error counters"
+    - "JTAG / SWD debug interface"
+    - "Diagnostic Trouble Codes (DTCs)"
+    - "Safety monitor co-processor (e.g. TI RM46)"
+    - "End-of-line (EOL) production test"
+
+  standards_preference: "IEC_60812"
+
+
+mechanical:
+  description: "Physical systems, manufacturing equipment, materials, and structural components"
+  example_systems:
+    - "CNC machining centres"
+    - "Pneumatic / hydraulic assemblies"
+    - "Structural frames and load-bearing elements"
+    - "Rotating machinery"
+    - "Conveyor and material handling systems"
+
+  component_types:
+    SERVICE:
+      description: "Mechanical subsystem or assembly"
+      failure_modes:
+        - "Fatigue crack initiation at stress concentration"
+        - "Corrosion pitting leading to wall thinning"
+        - "Fretting wear at bolted joint interface"
+        - "Thermal expansion mismatch causing misalignment"
+        - "Vibration-induced fastener loosening"
+    SENSOR:
+      description: "Mechanical measurement instrument"
+      failure_modes:
+        - "Pressure transducer diaphragm rupture"
+        - "Thermocouple drift from contamination"
+        - "Encoder resolution loss from contamination"
+        - "Load cell overload beyond rated capacity"
+        - "Temperature-induced zero offset"
+    ACTUATOR:
+      description: "Mechanical driver component"
+      failure_modes:
+        - "Hydraulic seal failure causing leakage"
+        - "Solenoid coil burnout from duty cycle violation"
+        - "Pneumatic cylinder rod scoring"
+        - "Ball screw backlash from wear"
+        - "Brake pad wear beyond minimum thickness"
+    NETWORK:
+      description: "Mechanical linkage or power transmission"
+      failure_modes:
+        - "Belt slip at peak torque"
+        - "Gear tooth fracture from shock load"
+        - "Coupling misalignment causing bearing overload"
+        - "Keyway shear failure"
+        - "Chain elongation from wear"
+
+  severity_context:
+    10: "Catastrophic structural failure; loss of life; facility damage"
+    8-9: "Major injury risk; unplanned production shutdown > 8 hours"
+    6-7: "Quality non-conformance; unplanned maintenance; minor injury risk"
+    4-5: "Reduced throughput; increased scrap rate; planned maintenance triggered"
+    1-3: "Cosmetic defect; no production impact"
+
+  detection_methods:
+    - "Vibration analysis (FFT spectrum)"
+    - "Non-destructive testing (NDT: UT, PT, MT)"
+    - "Oil analysis (wear particle count)"
+    - "Thermography for thermal anomalies"
+    - "Visual inspection checklist"
+    - "SPC control charts on process parameters"
+    - "Finite element analysis (pre-deployment)"
+
+  standards_preference: "AIAG_FMEA4"
+
+
+hybrid:
+  description: "Multi-domain systems combining cloud, embedded, and mechanical elements"
+  example_systems:
+    - "Connected vehicles (ADAS + cloud backend)"
+    - "Smart factory / Industry 4.0"
+    - "Medical devices with cloud telemetry"
+    - "Autonomous robotics"
+    - "Building management systems"
+
+  component_types:
+    SERVICE:
+      description: "Software or firmware component in a cyber-physical system"
+      failure_modes:
+        - "Over-the-air update failure during operation"
+        - "Time synchronisation loss between edge and cloud"
+        - "Sensor data drop-out corrupting digital twin"
+        - "Actuation command latency causing physical instability"
+        - "Cybersecurity intrusion affecting physical output"
+    SENSOR:
+      description: "Physical sensor with digital reporting"
+      failure_modes:
+        - "Sensor spoofing via adversarial input"
+        - "Firmware bug causing systematic sensor misread"
+        - "Environmental interference (EMC) corrupting reading"
+        - "Network partition isolating sensor data"
+        - "Battery depletion causing silent data loss"
+    GATEWAY:
+      description: "Edge gateway bridging physical and cloud"
+      failure_modes:
+        - "Protocol translation error losing telemetry"
+        - "Edge ML model stale after cloud update"
+        - "Offline operation mode failure"
+        - "Bandwidth saturation dropping critical alerts"
+        - "Certificate rotation failure breaking cloud connection"
+
+  severity_context:
+    10: "Loss of life; loss of vehicle/robot control; critical infrastructure failure"
+    8-9: "Serious injury risk; major operational disruption; regulatory breach"
+    6-7: "Degraded autonomous function; safety monitor gap; data integrity failure"
+    4-5: "Performance degradation; non-critical feature loss; increased maintenance"
+    1-3: "Cosmetic / logging issue; no operational impact"
+
+  detection_methods:
+    - "Digital twin anomaly detection"
+    - "Cross-layer monitoring (physical + cyber)"
+    - "Hardware watchdog + cloud heartbeat"
+    - "Intrusion detection system (IDS)"
+    - "End-to-end latency monitoring"
+    - "Redundant sensor voting"
+
+  standards_preference: "IEC_60812"

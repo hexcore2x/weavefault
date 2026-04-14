@@ -1,0 +1,238 @@
+name: WeaveFault CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # ──────────────────────────────────────────────────────────────
+  # Lint & Format
+  # ──────────────────────────────────────────────────────────────
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install lint dependencies
+        run: pip install black ruff
+
+      - name: Check formatting (black)
+        run: black --check --diff src/ tests/ scripts/
+
+      - name: Lint (ruff)
+        run: ruff check src/ tests/ scripts/
+
+  # ──────────────────────────────────────────────────────────────
+  # Tests
+  # ──────────────────────────────────────────────────────────────
+  test:
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -e ".[dev]"
+          # Core runtime deps that tests need (excluding heavy optional libs)
+          pip install networkx pydantic pydantic-settings click rich openpyxl
+
+      - name: Run tests
+        run: |
+          pytest tests/ \
+            --tb=short \
+            -v \
+            --junit-xml=pytest-results-${{ matrix.python-version }}.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: pytest-results-${{ matrix.python-version }}.xml
+
+  # ──────────────────────────────────────────────────────────────
+  # Test Coverage
+  # ──────────────────────────────────────────────────────────────
+  coverage:
+    name: Coverage Report
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -e ".[dev]"
+          pip install networkx pydantic pydantic-settings click rich openpyxl pytest-cov
+
+      - name: Run tests with coverage
+        run: |
+          pytest tests/ \
+            --cov=weavefault \
+            --cov-report=xml \
+            --cov-report=term-missing \
+            --cov-fail-under=70
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: coverage.xml
+          flags: unittests
+          fail_ci_if_error: false
+
+  # ──────────────────────────────────────────────────────────────
+  # Build & Install Smoke Test
+  # ──────────────────────────────────────────────────────────────
+  build:
+    name: Build & Install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install build deps
+        run: pip install build twine
+
+      - name: Build wheel and sdist
+        run: python -m build
+
+      - name: Check distribution
+        run: twine check dist/*
+
+      - name: Install from wheel and verify CLI
+        run: |
+          pip install dist/*.whl --no-deps
+          pip install networkx pydantic pydantic-settings click rich openpyxl python-dotenv
+          weavefault --version
+
+      - name: Run sample generator (smoke test — no API key needed)
+        run: |
+          pip install networkx pydantic pydantic-settings click rich openpyxl python-dotenv
+          python scripts/generate_sample.py --output /tmp/weavefault_sample --format markdown
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  # ──────────────────────────────────────────────────────────────
+  # FMEA Diagram CI — regenerate FMEA on diagram changes
+  # ──────────────────────────────────────────────────────────────
+  fmea-diagram-ci:
+    name: FMEA Diagram Change Detection
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed diagram files
+        id: diagrams
+        run: |
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep -E '\.(png|svg|drawio|xml|pdf)$' || true)
+          echo "changed_diagrams=$CHANGED" >> $GITHUB_OUTPUT
+          if [ -n "$CHANGED" ]; then
+            echo "::notice ::Diagram files changed: $CHANGED"
+          else
+            echo "::notice ::No diagram files changed in this PR."
+          fi
+
+      - name: Comment on PR if diagrams changed
+        if: steps.diagrams.outputs.changed_diagrams != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const diagrams = `${{ steps.diagrams.outputs.changed_diagrams }}`.split('\n').filter(Boolean);
+            const body = [
+              '## WeaveFault — Diagram Changes Detected',
+              '',
+              'The following architecture diagrams were modified in this PR:',
+              '',
+              ...diagrams.map(d => `- \`${d}\``),
+              '',
+              '**Action required:** Run `weavefault generate` to regenerate FMEA and commit the updated outputs.',
+              '',
+              '```bash',
+              '# For each changed diagram:',
+              diagrams.map(d => `weavefault generate --diagram ${d} --output ./fmea/ --format both`).join('\n'),
+              '```',
+            ].join('\n');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body,
+            });
+
+  # ──────────────────────────────────────────────────────────────
+  # Release (on version tag)
+  # ──────────────────────────────────────────────────────────────
+  release:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: [lint, test, build]
+    if: startsWith(github.ref, 'refs/tags/v')
+    environment: pypi
+    permissions:
+      id-token: write  # OIDC trusted publishing
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install build deps
+        run: pip install build
+
+      - name: Build distribution
+        run: python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
