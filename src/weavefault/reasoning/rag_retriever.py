@@ -4,6 +4,7 @@ WeaveFault RAGRetriever — semantic retrieval over past FMEAs and standards.
 Uses ChromaDB as the vector store and sentence-transformers (or the LLM
 provider's embedding API) for embedding.
 """
+
 from __future__ import annotations
 
 import logging

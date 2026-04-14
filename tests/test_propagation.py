@@ -1,6 +1,7 @@
 """
 Tests for CascadeSimulator — BFS propagation, blast radius, worst failures.
 """
+
 from __future__ import annotations
 
 import pytest

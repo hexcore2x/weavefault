@@ -3,6 +3,7 @@ WeaveFault CLI - weavefault generate / diff / watch.
 
 Entry point: weavefault.cli.main:cli
 """
+
 from __future__ import annotations
 
 import json

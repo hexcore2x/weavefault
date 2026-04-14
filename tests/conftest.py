@@ -4,6 +4,7 @@ Shared pytest fixtures for WeaveFault tests.
 These fixtures provide reusable test data so individual test modules
 don't repeat the same boilerplate setup code.
 """
+
 from __future__ import annotations
 
 import pytest

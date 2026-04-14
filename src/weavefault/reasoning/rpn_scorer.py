@@ -1,6 +1,7 @@
 """
 WeaveFault RPNScorer - LLM-based review and adjustment of RPN scores.
 """
+
 from __future__ import annotations
 
 import json

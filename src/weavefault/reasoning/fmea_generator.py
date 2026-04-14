@@ -8,6 +8,7 @@ For each component in the diagram, builds a rich context prompt that includes:
   - Criticality analysis
   - RAG context (past FMEAs + standards)
 """
+
 from __future__ import annotations
 
 import json

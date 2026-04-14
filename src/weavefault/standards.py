@@ -4,6 +4,7 @@ WeaveFault standard utilities.
 Loads standard-specific scoring guidance and thresholds so generation,
 scoring, and export paths stay aligned with the selected methodology.
 """
+
 from __future__ import annotations
 
 import json

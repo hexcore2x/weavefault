@@ -1,6 +1,7 @@
 """
 Tests for the file_loader module — get_file_type and validate_file.
 """
+
 from __future__ import annotations
 
 from pathlib import Path

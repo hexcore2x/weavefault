@@ -4,6 +4,7 @@ WeaveFault FMEAFormatter — structure FMEA rows to AIAG / IEC 60812 format.
 Converts internal FMEARow objects into ordered, standard-compliant
 dictionaries ready for export.
 """
+
 from __future__ import annotations
 
 import json

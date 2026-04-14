@@ -1,6 +1,7 @@
 """
 Tests for FMEAFormatter, ExcelExporter, and MarkdownExporter.
 """
+
 from __future__ import annotations
 
 import json

@@ -1,4 +1,5 @@
 """WeaveFault output layer — formatters, exporters, and FMEA diff engine."""
+
 from __future__ import annotations
 
 from weavefault.output.diff_engine import FMEADiffEngine

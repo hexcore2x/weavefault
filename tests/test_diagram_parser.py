@@ -2,6 +2,7 @@
 Tests for DiagramParser — focuses on the pure-Python parts that don't
 require LLM API calls: _parse_llm_response, _build_vision_prompt, _slugify.
 """
+
 from __future__ import annotations
 
 import json

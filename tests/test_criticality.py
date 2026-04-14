@@ -1,6 +1,7 @@
 """
 Tests for CriticalityAnalyzer — SPOF detection, scoring, risk tiers, annotation.
 """
+
 from __future__ import annotations
 
 import pytest

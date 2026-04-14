@@ -1,6 +1,7 @@
 """
 Tests for standard-specific configuration helpers.
 """
+
 from __future__ import annotations
 
 from weavefault.standards import (

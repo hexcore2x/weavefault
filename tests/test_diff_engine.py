@@ -1,6 +1,7 @@
 """
 Tests for FMEADiffEngine — diff computation and Markdown rendering.
 """
+
 from __future__ import annotations
 
 import pytest

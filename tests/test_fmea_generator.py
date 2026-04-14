@@ -1,6 +1,7 @@
 """
 Tests for FMEAGenerator._parse_rows and FMEARow/FMEADocument helpers.
 """
+
 from __future__ import annotations
 
 import json

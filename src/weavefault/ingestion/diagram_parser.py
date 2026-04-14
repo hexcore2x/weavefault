@@ -4,6 +4,7 @@ WeaveFault DiagramParser — Vision LLM extraction from architecture diagrams.
 Supports PNG, JPG, SVG, drawio/XML, and PDF inputs.
 Integrates with Anthropic (claude-opus-4-6) and OpenAI (gpt-4o) vision APIs.
 """
+
 from __future__ import annotations
 
 import base64

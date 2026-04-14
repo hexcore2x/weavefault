@@ -4,6 +4,7 @@ WeaveFault CriticalityAnalyzer - identify SPOFs, critical paths, and risk tiers.
 Combines graph topology metrics with cascade blast radius to assign
 per-node criticality scores and risk classifications.
 """
+
 from __future__ import annotations
 
 import logging

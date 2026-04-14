@@ -3,6 +3,7 @@ WeaveFault data models.
 
 All core data structures: Component, Edge, DiagramGraph, FMEARow, FMEADocument.
 """
+
 from __future__ import annotations
 
 import json

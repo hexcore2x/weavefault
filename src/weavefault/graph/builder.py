@@ -1,6 +1,7 @@
 """
 WeaveFault GraphBuilder - build an annotated NetworkX DiGraph from a DiagramGraph.
 """
+
 from __future__ import annotations
 
 import logging

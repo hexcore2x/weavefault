@@ -1,4 +1,5 @@
 """WeaveFault graph engine — topology builder, cascade simulation, criticality."""
+
 from __future__ import annotations
 
 from weavefault.graph.builder import GraphBuilder

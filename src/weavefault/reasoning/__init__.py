@@ -1,4 +1,5 @@
 """WeaveFault reasoning layer — LLM FMEA generation, RPN scoring, RAG, audit trails."""
+
 from __future__ import annotations
 
 from weavefault.reasoning.fmea_generator import FMEAGenerator

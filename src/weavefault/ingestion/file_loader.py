@@ -1,6 +1,7 @@
 """
 WeaveFault file loader — route input files by extension to the correct parser.
 """
+
 from __future__ import annotations
 
 from pathlib import Path

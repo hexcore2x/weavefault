@@ -8,6 +8,7 @@ Produces a clean .md file with:
 - Mermaid dependency graph
 - High-risk section
 """
+
 from __future__ import annotations
 
 import logging

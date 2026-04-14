@@ -4,6 +4,7 @@ WeaveFault FMEADiffEngine — compare two FMEA snapshots and produce a diff repo
 Identifies new, removed, and changed failure modes between two FMEADocument
 versions. Produces a structured Markdown diff report for git-native review.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

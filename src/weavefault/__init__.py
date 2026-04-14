@@ -3,6 +3,7 @@ WeaveFault — Diagram-native automated FMEA generator powered by LLMs.
 
 "We weave through your architecture to find where it will fault."
 """
+
 from __future__ import annotations
 
 __version__ = "0.1.0"

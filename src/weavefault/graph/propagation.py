@@ -4,6 +4,7 @@ WeaveFault CascadeSimulator — BFS failure propagation through a directed graph
 Simulates "if component X fails, what else breaks?" by following directed
 edges from the origin node and computing blast radius.
 """
+
 from __future__ import annotations
 
 import logging

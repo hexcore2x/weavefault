@@ -1,6 +1,7 @@
 """
 Tests for RAGRetriever — graceful degradation when ChromaDB is absent or empty.
 """
+
 from __future__ import annotations
 
 import pytest

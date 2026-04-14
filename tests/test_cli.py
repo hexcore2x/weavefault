@@ -2,6 +2,7 @@
 CLI integration tests using Click's test runner.
 Tests the weavefault generate / diff / watch commands without LLM API calls.
 """
+
 from __future__ import annotations
 
 import json
