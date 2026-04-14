@@ -7,7 +7,6 @@ from __future__ import annotations
 import json
 
 import pytest
-
 from weavefault.ingestion.schema import FMEARow
 from weavefault.reasoning.rpn_scorer import RPNScorer
 
