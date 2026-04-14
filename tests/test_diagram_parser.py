@@ -8,7 +8,6 @@ from __future__ import annotations
 import json
 
 import pytest
-
 from weavefault.ingestion.diagram_parser import DiagramParseError, DiagramParser
 from weavefault.ingestion.schema import ComponentType, DiagramGraph
 

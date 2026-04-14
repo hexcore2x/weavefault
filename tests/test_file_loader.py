@@ -7,7 +7,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from weavefault.ingestion.file_loader import (
     SUPPORTED_EXTENSIONS,
     get_file_type,

@@ -5,7 +5,6 @@ Tests for GraphBuilder — build, adjacency summary, critical nodes, Mermaid exp
 from __future__ import annotations
 
 import pytest
-
 from weavefault.graph.builder import GraphBuilder
 from weavefault.ingestion.schema import Component, ComponentType, DiagramGraph, Edge
 

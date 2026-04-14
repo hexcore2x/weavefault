@@ -5,7 +5,6 @@ Tests for CascadeSimulator — BFS propagation, blast radius, worst failures.
 from __future__ import annotations
 
 import pytest
-
 from weavefault.graph.builder import GraphBuilder
 from weavefault.graph.propagation import CascadeChain, CascadeSimulator
 from weavefault.ingestion.schema import Component, ComponentType, DiagramGraph, Edge

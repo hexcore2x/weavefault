@@ -10,7 +10,6 @@ from pathlib import Path
 
 import pytest
 from click.testing import CliRunner
-
 from weavefault.cli.main import cli, diff, generate
 from weavefault.ingestion.diagram_parser import DiagramParseError
 

@@ -4,11 +4,7 @@ Tests for FMEAFormatter, ExcelExporter, and MarkdownExporter.
 
 from __future__ import annotations
 
-import json
-from pathlib import Path
-
 import pytest
-
 from weavefault.output.fmea_formatter import (
     AIAG_COLUMNS,
     IEC_60812_COLUMNS,
@@ -16,7 +12,6 @@ from weavefault.output.fmea_formatter import (
     FMEAFormatter,
 )
 from weavefault.output.markdown_exporter import MarkdownExporter
-
 
 # ──────────────────────────────────────────────────────────────────────────────
 # FMEAFormatter
@@ -274,7 +269,7 @@ class TestExcelExporter:
         assert ws.max_row == 1 + len(sample_document.rows)
 
     def test_different_standard_aiag(self, sample_document, tmp_path) -> None:
-        openpyxl = pytest.importorskip("openpyxl")
+        pytest.importorskip("openpyxl")
         from weavefault.output.excel_exporter import ExcelExporter
 
         path = ExcelExporter(standard="AIAG_FMEA4").export(

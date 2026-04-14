@@ -44,7 +44,6 @@ class CriticalityAnalyzer:
           - blast_radius_pct / 100 (cascade reach)
           - out_degree / max_out_degree (how many downstream depend on this node)
         """
-        import networkx as nx
 
         spofs = set(self.get_spofs(graph))
         out_degrees = [graph.out_degree(node_id) for node_id in graph.nodes]

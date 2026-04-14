@@ -5,7 +5,6 @@ Tests for FMEADiffEngine — diff computation and Markdown rendering.
 from __future__ import annotations
 
 import pytest
-
 from weavefault.ingestion.schema import (
     Component,
     ComponentType,
@@ -14,7 +13,6 @@ from weavefault.ingestion.schema import (
     FMEARow,
 )
 from weavefault.output.diff_engine import FMEADiff, FMEADiffEngine, _row_key
-
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 

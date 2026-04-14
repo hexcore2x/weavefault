@@ -5,12 +5,10 @@ Tests for CriticalityAnalyzer — SPOF detection, scoring, risk tiers, annotatio
 from __future__ import annotations
 
 import pytest
-
 from weavefault.graph.builder import GraphBuilder
 from weavefault.graph.criticality import TIER_THRESHOLDS, CriticalityAnalyzer
 from weavefault.graph.propagation import CascadeSimulator
-from weavefault.ingestion.schema import Component, ComponentType, DiagramGraph, Edge
-
+from weavefault.ingestion.schema import Component, ComponentType, DiagramGraph
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 

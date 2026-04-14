@@ -203,8 +203,8 @@ def get_score_header_labels(profile: StandardProfile) -> dict[str, str]:
     names = get_score_display_names(profile)
     short = get_score_short_labels(profile)
     return {
-        field: f"{names[field]} ({short[field]})"
-        for field in ("severity", "occurrence", "detection")
+        score_field: f"{names[score_field]} ({short[score_field]})"
+        for score_field in ("severity", "occurrence", "detection")
     }
 
 
@@ -214,12 +214,13 @@ def build_standard_score_guidance(profile: StandardProfile) -> str:
     labels = get_score_short_labels(profile)
     parts = []
 
-    for field in ("severity", "occurrence", "detection"):
-        scale = profile.scales.get(field)
+    for score_field in ("severity", "occurrence", "detection"):
+        scale = profile.scales.get(score_field)
         if not scale:
             continue
         parts.append(
-            f"{names[field]} ({labels[field]}): {_format_scale_summary(scale)}"
+            f"{names[score_field]} ({labels[score_field]}): "
+            f"{_format_scale_summary(scale)}"
         )
 
     if profile.id == "ISO_26262":

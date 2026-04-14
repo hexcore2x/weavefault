@@ -393,7 +393,7 @@ def main() -> None:
     args = parse_args()
 
     try:
-        import chromadb
+        import chromadb as cdb
     except ImportError:
         print("ERROR: chromadb is not installed. Run: pip install chromadb")
         sys.exit(1)
@@ -404,9 +404,6 @@ def main() -> None:
         chroma_db_path=args.db,
         collection_name=args.collection,
     )
-
-    # Force-create the collection
-    import chromadb as cdb
 
     client = cdb.PersistentClient(path=str(Path(args.db).resolve()))
 

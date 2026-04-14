@@ -8,7 +8,6 @@ don't repeat the same boilerplate setup code.
 from __future__ import annotations
 
 import pytest
-
 from weavefault.graph.builder import GraphBuilder
 from weavefault.graph.propagation import CascadeSimulator
 from weavefault.ingestion.schema import (
@@ -19,7 +18,6 @@ from weavefault.ingestion.schema import (
     FMEADocument,
     FMEARow,
 )
-
 
 # ── Diagrams ──────────────────────────────────────────────────────────────────
 
